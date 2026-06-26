@@ -2,6 +2,7 @@ import BoardColumn from "./BoardColumn";
 import { useWorkspaceStore } from "../stores/workSpaceStore";
 import { useModalStore } from "../stores/modalStore";
 import { MODAL_TYPE } from "../types/modal";
+import { Plus } from "lucide-react";
 
 const WorkspaceView = () => {
   const workspaces = useWorkspaceStore((state) => state.workspaces);
@@ -34,9 +35,9 @@ const WorkspaceView = () => {
               workspaceId: selectedWorkspace.id,
             })
           }
-          className="mx-2 ml-10 mt-4 rounded-lg bg-violet-800 px-4 py-2 text-white transition-all duration-200 ease-in-out hover:bg-violet-500"
+          className="mx-2 ml-3 mt-4 rounded-lg bg-violet-800 px-4 py-2 text-white transition-all duration-200 ease-in-out hover:bg-violet-500 cursor-pointer"
         >
-          Add board
+          <Plus size={26} />
         </button>
       </div>
 

@@ -3,6 +3,7 @@ import type { Task } from "../types/workspace";
 import { useWorkspaceStore } from "../stores/workSpaceStore";
 import { useModalStore } from "../stores/modalStore";
 import { MODAL_TYPE } from "../types/modal";
+import { PencilIcon, Trash2 } from "lucide-react";
 
 type TaskCardProps = {
   workspaceId: string;
@@ -33,9 +34,9 @@ const TaskCard = ({ workspaceId, boardId, task }: TaskCardProps) => {
               initialValue: task.title,
             })
           }
-          className="rounded bg-slate-700 px-2 py-1 text-sm text-white"
+          className="rounded bg-slate-700 px-2 py-1 text-sm text-white cursor-pointer"
         >
-          Edit
+          <PencilIcon size={16} />
         </button>
 
         <button
@@ -51,9 +52,9 @@ const TaskCard = ({ workspaceId, boardId, task }: TaskCardProps) => {
               },
             })
           }
-          className="rounded bg-red-700 px-2 py-1 text-sm text-white"
+          className="rounded bg-red-700 px-2 py-1 text-sm text-white cursor-pointer "
         >
-          Delete
+          <Trash2 size={16} />
         </button>
       </div>
     </div>

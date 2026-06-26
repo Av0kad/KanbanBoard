@@ -1,6 +1,7 @@
 import { useWorkspaceStore } from "../stores/workSpaceStore";
 import { useModalStore } from "../stores/modalStore";
 import { MODAL_TYPE } from "../types/modal";
+import { PencilIcon, Trash2 } from "lucide-react";
 
 const WorkspaceList = () => {
   const workspaces = useWorkspaceStore((state) => state.workspaces);
@@ -41,9 +42,9 @@ const WorkspaceList = () => {
                 initialValue: workspace.name,
               })
             }
-            className="rounded bg-slate-700 px-2 py-1 text-sm text-white"
+            className="rounded bg-slate-700 px-2 py-1 text-sm text-white cursor-pointer"
           >
-            Edit
+            <PencilIcon size={24} />
           </button>
 
           <button
@@ -59,9 +60,9 @@ const WorkspaceList = () => {
                 },
               })
             }
-            className="rounded bg-red-700 px-2 py-1 text-sm text-white"
+            className="rounded bg-red-700 px-2 py-1 text-sm text-white cursor-pointer"
           >
-            Delete
+            <Trash2 size={24} />
           </button>
         </div>
       ))}

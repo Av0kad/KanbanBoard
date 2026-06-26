@@ -3,6 +3,7 @@ import TaskCard from "./taskCard";
 import { useWorkspaceStore } from "../stores/workSpaceStore";
 import { useModalStore } from "../stores/modalStore";
 import { MODAL_TYPE } from "../types/modal";
+import { ArrowLeft, ArrowRight, PencilIcon, Plus, Trash2 } from "lucide-react";
 
 type BoardColumnProps = {
   workspaceId: string;
@@ -26,17 +27,17 @@ const BoardColumn = ({ workspaceId, board }: BoardColumnProps) => {
           <button
             type="button"
             onClick={() => moveBoard(workspaceId, board.id, "left")}
-            className="rounded bg-slate-700 px-2 py-1 text-white"
+            className="rounded bg-slate-700 px-2 py-1 text-white cursor-pointer"
           >
-            ←
+            <ArrowLeft size={16} />
           </button>
 
           <button
             type="button"
             onClick={() => moveBoard(workspaceId, board.id, "right")}
-            className="rounded bg-slate-700 px-2 py-1 text-white"
+            className="rounded bg-slate-700 px-2 py-1 text-white cursor-pointer"
           >
-            →
+            <ArrowRight size={16} />
           </button>
 
           <button
@@ -49,9 +50,9 @@ const BoardColumn = ({ workspaceId, board }: BoardColumnProps) => {
                 initialValue: board.name,
               })
             }
-            className="rounded bg-slate-700 px-2 py-1 text-white"
+            className="rounded bg-slate-700 px-2 py-1 text-white cursor-pointer"
           >
-            Edit
+            <PencilIcon size={16} />
           </button>
 
           <button
@@ -67,9 +68,9 @@ const BoardColumn = ({ workspaceId, board }: BoardColumnProps) => {
                 },
               })
             }
-            className="rounded bg-red-700 px-2 py-1 text-white"
+            className="rounded bg-red-700 px-2 py-1 text-white cursor-pointer"
           >
-            Delete
+            <Trash2 size={16} />
           </button>
 
           <button
@@ -81,9 +82,9 @@ const BoardColumn = ({ workspaceId, board }: BoardColumnProps) => {
                 boardId: board.id,
               })
             }
-            className="rounded-lg bg-violet-700 px-3 py-1 text-white"
+            className="rounded-lg bg-violet-700 px-3 py-1 text-white cursor-pointer"
           >
-            +
+            <Plus size={24} />
           </button>
         </div>
       </div>
