@@ -5,13 +5,14 @@ export type Task = {
 
 export type Board = {
   id: string;
-  name: string;
+  title: string;
   tasks: Task[];
 };
 
 export type Workspace = {
   id: string;
-  name: string;
+  title: string;
+  ownerId: string;
   boards: Board[];
 };
 

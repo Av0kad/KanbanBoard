@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-
+import { WorkspaceAccessModule } from './common/access/workspace-access.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { BoardsModule } from './boards/boards.module';
@@ -14,6 +14,7 @@ import { WorkspacesModule } from './workspaces/workspaces/workspaces.module';
       isGlobal: true,
     }),
     PrismaModule,
+    WorkspaceAccessModule,
     AuthModule,
     UsersModule,
     WorkspacesModule,

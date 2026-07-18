@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Param,
+  ParseUUIDPipe,
   Patch,
   Post,
   UseGuards,
@@ -22,7 +23,7 @@ export class BoardsController {
   @Post('workspaces/:workspaceId/boards')
   createBoard(
     @CurrentUser() user: AuthenticatedUser,
-    @Param('workspaceId') workspaceId: string,
+    @Param('workspaceId', new ParseUUIDPipe()) workspaceId: string,
     @Body() dto: CreateBoardDto,
   ) {
     return this.boardsService.create(user.id, workspaceId, dto);
@@ -31,7 +32,7 @@ export class BoardsController {
   @Patch('boards/:boardId')
   updateBoard(
     @CurrentUser() user: AuthenticatedUser,
-    @Param('boardId') boardId: string,
+    @Param('boardId', new ParseUUIDPipe()) boardId: string,
     @Body() dto: UpdateBoardDto,
   ) {
     return this.boardsService.update(user.id, boardId, dto);
@@ -40,7 +41,7 @@ export class BoardsController {
   @Delete('boards/:boardId')
   deleteBoard(
     @CurrentUser() user: AuthenticatedUser,
-    @Param('boardId') boardId: string,
+    @Param('boardId', new ParseUUIDPipe()) boardId: string,
   ) {
     return this.boardsService.remove(user.id, boardId);
   }

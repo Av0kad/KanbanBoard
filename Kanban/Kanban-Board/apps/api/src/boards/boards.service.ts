@@ -1,17 +1,18 @@
-import {
-  ForbiddenException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+
 import { PrismaService } from '../prisma/prisma.service';
+import { WorkspaceAccessService } from '../common/access/workspace-access.service';
 import { CreateBoardDto, UpdateBoardDto } from './dto/board.dto';
 
 @Injectable()
 export class BoardsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly workspaceAccess: WorkspaceAccessService,
+  ) {}
 
   async create(userId: string, workspaceId: string, dto: CreateBoardDto) {
-    await this.ensureUserHasWorkspaceAccess(userId, workspaceId);
+    await this.workspaceAccess.ensureMember(userId, workspaceId);
 
     return this.prisma.board.create({
       data: {
@@ -25,24 +26,18 @@ export class BoardsService {
   }
 
   async update(userId: string, boardId: string, dto: UpdateBoardDto) {
-    const board = await this.prisma.board.findUnique({
-      where: { id: boardId },
-      select: {
-        id: true,
-        workspaceId: true,
-      },
-    });
+    const board = await this.findBoardOrThrow(boardId);
 
-    if (!board) {
-      throw new NotFoundException('Board not found');
-    }
-
-    await this.ensureUserHasWorkspaceAccess(userId, board.workspaceId);
+    await this.workspaceAccess.ensureMember(userId, board.workspaceId);
 
     return this.prisma.board.update({
-      where: { id: boardId },
+      where: {
+        id: boardId,
+      },
       data: {
-        title: dto.title,
+        ...(dto.title !== undefined && {
+          title: dto.title,
+        }),
       },
       include: {
         tasks: true,
@@ -51,8 +46,22 @@ export class BoardsService {
   }
 
   async remove(userId: string, boardId: string) {
+    const board = await this.findBoardOrThrow(boardId);
+
+    await this.workspaceAccess.ensureMember(userId, board.workspaceId);
+
+    return this.prisma.board.delete({
+      where: {
+        id: boardId,
+      },
+    });
+  }
+
+  private async findBoardOrThrow(boardId: string) {
     const board = await this.prisma.board.findUnique({
-      where: { id: boardId },
+      where: {
+        id: boardId,
+      },
       select: {
         id: true,
         workspaceId: true,
@@ -63,30 +72,6 @@ export class BoardsService {
       throw new NotFoundException('Board not found');
     }
 
-    await this.ensureUserHasWorkspaceAccess(userId, board.workspaceId);
-
-    return this.prisma.board.delete({
-      where: { id: boardId },
-    });
-  }
-
-  private async ensureUserHasWorkspaceAccess(
-    userId: string,
-    workspaceId: string,
-  ) {
-    const membership = await this.prisma.workspaceMember.findUnique({
-      where: {
-        userId_workspaceId: {
-          userId,
-          workspaceId,
-        },
-      },
-    });
-
-    if (!membership) {
-      throw new ForbiddenException('You do not have access to this workspace');
-    }
-
-    return membership;
+    return board;
   }
 }
