@@ -21,7 +21,7 @@ const BoardColumn = ({ workspaceId, board }: BoardColumnProps) => {
   return (
     <div className="min-w-72 rounded-xl bg-black p-4 shadow">
       <div className="mb-3 flex items-center justify-between gap-3">
-        <h2 className="font-bold">{board.name}</h2>
+        <h2 className="font-bold">{board.title}</h2>
 
         <div className="flex gap-2">
           <button
@@ -47,7 +47,7 @@ const BoardColumn = ({ workspaceId, board }: BoardColumnProps) => {
                 type: MODAL_TYPE.EDIT_BOARD,
                 workspaceId,
                 boardId: board.id,
-                initialValue: board.name,
+                initialValue: board.title,
               })
             }
             className="rounded bg-slate-700 px-2 py-1 text-white cursor-pointer"
@@ -60,7 +60,7 @@ const BoardColumn = ({ workspaceId, board }: BoardColumnProps) => {
             onClick={() =>
               openConfirmModal({
                 title: "Delete board?",
-                message: `Delete board "${board.name}"?`,
+                message: `Delete board "${board.title}"?`,
                 confirmText: "Delete",
                 onConfirm: () => {
                   deleteBoard(workspaceId, board.id);

@@ -15,7 +15,3 @@ export type Workspace = {
   ownerId: string;
   boards: Board[];
 };
-
-export type MockData = {
-  workspaces: Workspace[];
-};

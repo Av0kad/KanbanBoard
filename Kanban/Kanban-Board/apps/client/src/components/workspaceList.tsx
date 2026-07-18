@@ -30,7 +30,7 @@ const WorkspaceList = () => {
             }
             onClick={() => setSelectedWorkspaceId(workspace.id)}
           >
-            {workspace.name}
+            {workspace.title}
           </button>
 
           <button
@@ -39,7 +39,7 @@ const WorkspaceList = () => {
               openModal({
                 type: MODAL_TYPE.EDIT_WORKSPACE,
                 workspaceId: workspace.id,
-                initialValue: workspace.name,
+                initialValue: workspace.title,
               })
             }
             className="rounded bg-slate-700 px-2 py-1 text-sm text-white cursor-pointer"
@@ -52,7 +52,7 @@ const WorkspaceList = () => {
             onClick={() =>
               openConfirmModal({
                 title: "Delete workspace?",
-                message: `Delete workspace "${workspace.name}"?`,
+                message: `Delete workspace "${workspace.title}"?`,
                 confirmText: "Delete",
                 onConfirm: () => {
                   deleteWorkspace(workspace.id);

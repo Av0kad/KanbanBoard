@@ -24,7 +24,7 @@ const WorkspaceView = () => {
     <div>
       <div className="mb-4 flex items-center justify-center">
         <h1 className="text-center text-5xl font-bold">
-          {selectedWorkspace.name}
+          {selectedWorkspace.title}
         </h1>
 
         <button
