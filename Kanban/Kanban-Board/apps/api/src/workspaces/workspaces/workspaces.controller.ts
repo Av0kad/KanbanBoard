@@ -14,4 +14,5 @@ export class WorkspacesController {
   create(@Body('title') title: string) {
     return this.workspacesService.create(title);
   }
+  
 }
