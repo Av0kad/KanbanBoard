@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { beforeEach, describe, expect, it } from '@jest/globals';
 
+import { WorkspaceAccessService } from '../../common/access/workspace-access.service';
 import { PrismaService } from '../../prisma/prisma.service';
 import { UsersService } from '../../users/users.service';
 import { WorkspacesService } from './workspaces.service';
@@ -18,6 +19,10 @@ describe('WorkspacesService', () => {
         },
         {
           provide: UsersService,
+          useValue: {},
+        },
+        {
+          provide: WorkspaceAccessService,
           useValue: {},
         },
       ],

@@ -28,12 +28,7 @@ model Workspace {
   title   String
   ownerId String
 
-  owner User @relation(
-    "WorkspaceOwner",
-    fields: [ownerId],
-    references: [id],
-    onDelete: Cascade
-  )
+  owner User @relation("WorkspaceOwner", fields: [ownerId], references: [id], onDelete: Cascade)
 
   members WorkspaceMember[]
   boards  Board[]
@@ -50,17 +45,9 @@ model WorkspaceMember {
   workspaceId String
   role        WorkspaceRole @default(MEMBER)
 
-  user User @relation(
-    fields: [userId],
-    references: [id],
-    onDelete: Cascade
-  )
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  workspace Workspace @relation(
-    fields: [workspaceId],
-    references: [id],
-    onDelete: Cascade
-  )
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
 
@@ -73,11 +60,7 @@ model Board {
   title       String
   workspaceId String
 
-  workspace Workspace @relation(
-    fields: [workspaceId],
-    references: [id],
-    onDelete: Cascade
-  )
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
 
   tasks Task[]
 
@@ -92,11 +75,7 @@ model Task {
   title   String
   boardId String
 
-  board Board @relation(
-    fields: [boardId],
-    references: [id],
-    onDelete: Cascade
-  )
+  board Board @relation(fields: [boardId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

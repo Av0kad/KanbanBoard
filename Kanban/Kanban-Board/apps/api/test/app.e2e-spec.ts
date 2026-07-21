@@ -2,13 +2,14 @@ import type { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { afterAll, beforeAll, describe, it } from '@jest/globals';
 import { ZodValidationPipe } from 'nestjs-zod';
-import request = require('supertest');
+import request from 'supertest';
+import type { App } from 'supertest/types';
 
 import { AppModule } from '../src/app.module';
 import { PrismaService } from '../src/prisma/prisma.service';
 
 describe('API security (e2e)', () => {
-  let app: INestApplication;
+  let app: INestApplication<App>;
 
   beforeAll(async () => {
     process.env.JWT_SECRET = 'e2e-test-secret-change-me-in-production';

@@ -4,33 +4,32 @@ import { useWorkspaceStore } from "../../stores/workSpaceStore";
 import { useModalStore } from "../../stores/modalStore";
 import { MODAL_TYPE } from "../../types/modal";
 
-const EditWorkspaceModal = () => {
+const CreateWorkspaceModal = () => {
   const modal = useModalStore((state) => state.modal);
-  const updateWorkspace = useWorkspaceStore((state) => state.updateWorkspace);
+  const addWorkspace = useWorkspaceStore((state) => state.addWorkspace);
 
   const closeModal = useModalStore((state) => state.closeModal);
   const openConfirmModal = useModalStore((state) => state.openConfirmModal);
   const closeConfirmModal = useModalStore((state) => state.closeConfirmModal);
 
-  if (!modal || modal.type !== MODAL_TYPE.EDIT_WORKSPACE) {
+  if (!modal || modal.type !== MODAL_TYPE.CREATE_WORKSPACE) {
     return null;
   }
 
   return (
     <ModalForm
-      title="Edit workspace"
+      title="Create workspace"
       label="Workspace name"
-      initialValue={modal.initialValue}
-      submitText="Save"
+      submitText="Create"
       schema={workspaceNameSchema}
       onRequestClose={closeModal}
       onSubmit={(title) =>
         openConfirmModal({
-          title: "Save workspace?",
-          message: `Rename workspace to "${title}"?`,
-          confirmText: "Save",
+          title: "Create workspace?",
+          message: `Create workspace "${title}"?`,
+          confirmText: "Create",
           onConfirm: () => {
-            void updateWorkspace(modal.workspaceId, title);
+            void addWorkspace(title);
             closeModal();
             closeConfirmModal();
           },
@@ -40,4 +39,4 @@ const EditWorkspaceModal = () => {
   );
 };
 
-export default EditWorkspaceModal;
+export default CreateWorkspaceModal;

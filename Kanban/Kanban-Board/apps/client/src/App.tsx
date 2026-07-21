@@ -56,7 +56,7 @@ function App() {
         <div>Loading workspaces...</div>
       ) : (
         <div className="mx-auto flex gap-6">
-          <aside className="w-72 rounded-2xl p-472 shadow">
+          <aside className="w-72 rounded-2xl p-4 shadow">
             <div className="mb-4 flex items-center justify-between">
               <h1 className="text-xl font-bold">Workspaces</h1>
 

@@ -1,6 +1,9 @@
 {
   "name": "kanban-board-monorepo",
   "private": true,
+  "engines": {
+    "node": "^20.19 || ^22.12 || >=24.0"
+  },
   "workspaces": [
     "apps/client",
     "apps/api"
@@ -22,10 +25,10 @@
     "lint": "npm run lint --workspace apps/client && npm run lint --workspace apps/api"
   },
   "devDependencies": {
-    "concurrently": "latest",
+    "concurrently": "9.2.4",
     "prisma": "^7.9.0"
   },
   "dependencies": {
-    "dotenv": "latest"
+    "dotenv": "17.4.2"
   }
 }
