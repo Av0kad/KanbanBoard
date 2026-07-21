@@ -1,5 +1,5 @@
 import ModalForm from "../ModalForm";
-import { workspaceNameVal } from "../../schemes/nameFormValues";
+import { workspaceNameSchema } from "../../schemes/nameFormValues";
 import { useWorkspaceStore } from "../../stores/workSpaceStore";
 import { useModalStore } from "../../stores/modalStore";
 import { MODAL_TYPE } from "../../types/modal";
@@ -23,7 +23,7 @@ const EditTaskModal = () => {
       label="Task title"
       initialValue={modal.initialValue}
       submitText="Save"
-      schema={workspaceNameVal}
+      schema={workspaceNameSchema}
       onRequestClose={() =>
         openConfirmModal({
           title: "Close modal?",

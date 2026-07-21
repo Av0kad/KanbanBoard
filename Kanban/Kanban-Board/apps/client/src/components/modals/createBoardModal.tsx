@@ -1,5 +1,5 @@
 import ModalForm from "../ModalForm";
-import { workspaceNameVal } from "../../schemes/nameFormValues";
+import { workspaceNameSchema } from "../../schemes/nameFormValues";
 import { useWorkspaceStore } from "../../stores/workSpaceStore";
 import { useModalStore } from "../../stores/modalStore";
 import { MODAL_TYPE } from "../../types/modal";
@@ -19,7 +19,7 @@ const CreateBoardModal = () => {
       title="Create board"
       label="Board name"
       submitText="Create"
-      schema={workspaceNameVal}
+      schema={workspaceNameSchema}
       onRequestClose={() =>
         openConfirmModal({
           title: "Close modal?",

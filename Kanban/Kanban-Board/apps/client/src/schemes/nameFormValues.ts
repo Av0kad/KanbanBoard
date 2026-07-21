@@ -1,17 +1,29 @@
 import { z } from "zod";
 
-export const workspaceNameVal = z.object({
+export const workspaceNameSchema = z.object({
   name: z
     .string()
     .trim()
-    .min(1, "Workspace needs a name!")
-    .regex(/^[a-z]*$/, "Workspace name can contain only lowercase letters.")
-    .min(5, "Workspace name must be at least 5 characters")
-    .max(30, "Workspace must be at most 30 characters"),
+    .min(1, "Workspace name is required")
+    .max(100, "Workspace name must be at most 100 characters"),
 });
 
-export const requiredNameSchema = z.object({
-  name: z.string().trim().min(1, "Name is required."),
+export const boardNameSchema = z.object({
+  name: z
+    .string()
+    .trim()
+    .min(1, "Board name is required")
+    .max(100, "Board name must be at most 100 characters"),
 });
 
-export type NameFormValues = z.infer<typeof requiredNameSchema>;
+export const taskTitleSchema = z.object({
+  name: z
+    .string()
+    .trim()
+    .min(1, "Task title is required")
+    .max(150, "Task title must be at most 150 characters"),
+});
+
+export type NameFormValues = {
+  name: string;
+};

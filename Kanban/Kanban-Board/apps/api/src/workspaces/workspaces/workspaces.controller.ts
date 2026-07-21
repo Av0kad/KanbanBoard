@@ -7,11 +7,9 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
-  UseGuards,
 } from '@nestjs/common';
 
 import { WorkspacesService } from './workspaces.service';
-import { JwtAuthGuard } from '../../guards/jwt.guard';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import type { AuthenticatedUser } from '../../common/types/authenticated-user.type';
 import {
@@ -20,7 +18,6 @@ import {
   UpdateWorkspaceDto,
 } from '../dto/workspace.dto';
 
-@UseGuards(JwtAuthGuard)
 @Controller('workspaces')
 export class WorkspacesController {
   constructor(private readonly workspacesService: WorkspacesService) {}

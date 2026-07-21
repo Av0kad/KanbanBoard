@@ -1,29 +1,38 @@
+import type { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
-import request from 'supertest';
-import { App } from 'supertest/types';
-import { AppModule } from './../src/app.module';
+import { afterAll, beforeAll, describe, it } from '@jest/globals';
+import { ZodValidationPipe } from 'nestjs-zod';
+import request = require('supertest');
 
-describe('AppController (e2e)', () => {
-  let app: INestApplication<App>;
+import { AppModule } from '../src/app.module';
+import { PrismaService } from '../src/prisma/prisma.service';
 
-  beforeEach(async () => {
+describe('API security (e2e)', () => {
+  let app: INestApplication;
+
+  beforeAll(async () => {
+    process.env.JWT_SECRET = 'e2e-test-secret-change-me-in-production';
+
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
-    }).compile();
+    })
+      .overrideProvider(PrismaService)
+      .useValue({})
+      .compile();
 
     app = moduleFixture.createNestApplication();
+
+    app.setGlobalPrefix('api');
+    app.useGlobalPipes(new ZodValidationPipe());
+
     await app.init();
   });
 
-  it('/ (GET)', () => {
-    return request(app.getHttpServer())
-      .get('/')
-      .expect(200)
-      .expect('Hello World!');
+  it('rejects requests without JWT', async () => {
+    await request(app.getHttpServer()).get('/api/workspaces').expect(401);
   });
 
-  afterEach(async () => {
-    await app.close();
+  afterAll(async () => {
+    await app?.close();
   });
 });

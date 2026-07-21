@@ -11,19 +11,21 @@
     "dev": "concurrently \"npm run api:dev\" \"npm run client:dev\"",
     "client:build": "npm run build --workspace apps/client",
     "api:build": "npm run build --workspace apps/api",
-    "build": "npm run client:build && npm run api:build",
+    "build": "npm run prisma:generate && npm run client:build && npm run api:build",
+    "postinstall": "prisma generate",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
-    "prisma:studio": "prisma studio"
+    "prisma:migrate:deploy": "prisma migrate deploy",
+    "prisma:studio": "prisma studio",
+    "test": "npm run test --workspace apps/api",
+    "test:e2e": "npm run test:e2e --workspace apps/api",
+    "lint": "npm run lint --workspace apps/client && npm run lint --workspace apps/api"
   },
   "devDependencies": {
     "concurrently": "latest",
-    "prisma": "latest"
+    "prisma": "^7.9.0"
   },
   "dependencies": {
-    "@prisma/client": "latest",
-    "@prisma/adapter-pg": "latest",
-    "pg": "latest",
     "dotenv": "latest"
   }
 }

@@ -6,16 +6,13 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
-  UseGuards,
 } from '@nestjs/common';
 
 import { BoardsService } from './boards.service';
-import { JwtAuthGuard } from '../guards/jwt.guard';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 import type { AuthenticatedUser } from '../common/types/authenticated-user.type';
 import { CreateBoardDto, UpdateBoardDto } from './dto/board.dto';
 
-@UseGuards(JwtAuthGuard)
 @Controller()
 export class BoardsController {
   constructor(private readonly boardsService: BoardsService) {}

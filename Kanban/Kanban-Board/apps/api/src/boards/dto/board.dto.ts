@@ -9,7 +9,12 @@ export const CreateBoardSchema = z
 
 export class CreateBoardDto extends createZodDto(CreateBoardSchema) {}
 
-export const UpdateBoardSchema = CreateBoardSchema.partial();
+export const UpdateBoardSchema = CreateBoardSchema.partial().refine(
+  (data) => Object.keys(data).length > 0,
+  {
+    message: 'At least one field must be provided',
+  },
+);
 
 export class UpdateBoardDto extends createZodDto(UpdateBoardSchema) {}
 

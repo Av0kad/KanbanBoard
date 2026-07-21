@@ -32,6 +32,10 @@ type ModalState =
       boardId: string;
       taskId: string;
       initialValue: string;
+    }
+  | {
+      type: typeof MODAL_TYPE.INVITE_MEMBER;
+      workspaceId: string;
     };
 
 type ConfirmModalState = null | {

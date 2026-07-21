@@ -1,39 +1,36 @@
 import ModalForm from "../ModalForm";
-import { workspaceNameVal } from "../../schemes/nameFormValues";
+import { workspaceNameSchema } from "../../schemes/nameFormValues";
 import { useWorkspaceStore } from "../../stores/workSpaceStore";
 import { useModalStore } from "../../stores/modalStore";
+import { MODAL_TYPE } from "../../types/modal";
 
-const CreateWorkspaceModal = () => {
-  const addWorkspace = useWorkspaceStore((state) => state.addWorkspace);
+const EditWorkspaceModal = () => {
+  const modal = useModalStore((state) => state.modal);
+  const updateWorkspace = useWorkspaceStore((state) => state.updateWorkspace);
 
   const closeModal = useModalStore((state) => state.closeModal);
   const openConfirmModal = useModalStore((state) => state.openConfirmModal);
   const closeConfirmModal = useModalStore((state) => state.closeConfirmModal);
 
+  if (!modal || modal.type !== MODAL_TYPE.EDIT_WORKSPACE) {
+    return null;
+  }
+
   return (
     <ModalForm
-      title="Create workspace"
+      title="Edit workspace"
       label="Workspace name"
-      submitText="Create"
-      schema={workspaceNameVal}
-      onRequestClose={() =>
+      initialValue={modal.initialValue}
+      submitText="Save"
+      schema={workspaceNameSchema}
+      onRequestClose={closeModal}
+      onSubmit={(title) =>
         openConfirmModal({
-          title: "Close modal?",
-          message: "Are you sure you want to close this form?",
-          confirmText: "Close",
+          title: "Save workspace?",
+          message: `Rename workspace to "${title}"?`,
+          confirmText: "Save",
           onConfirm: () => {
-            closeModal();
-            closeConfirmModal();
-          },
-        })
-      }
-      onSubmit={(name) =>
-        openConfirmModal({
-          title: "Create workspace?",
-          message: `Create workspace "${name}"?`,
-          confirmText: "Create",
-          onConfirm: () => {
-            addWorkspace(name);
+            void updateWorkspace(modal.workspaceId, title);
             closeModal();
             closeConfirmModal();
           },
@@ -43,4 +40,4 @@ const CreateWorkspaceModal = () => {
   );
 };
 
-export default CreateWorkspaceModal;
+export default EditWorkspaceModal;

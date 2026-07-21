@@ -9,7 +9,12 @@ export const CreateWorkspaceSchema = z
 
 export class CreateWorkspaceDto extends createZodDto(CreateWorkspaceSchema) {}
 
-export const UpdateWorkspaceSchema = CreateWorkspaceSchema.partial();
+export const UpdateWorkspaceSchema = CreateWorkspaceSchema.partial().refine(
+  (data) => Object.keys(data).length > 0,
+  {
+    message: 'At least one field must be provided',
+  },
+);
 
 export class UpdateWorkspaceDto extends createZodDto(UpdateWorkspaceSchema) {}
 

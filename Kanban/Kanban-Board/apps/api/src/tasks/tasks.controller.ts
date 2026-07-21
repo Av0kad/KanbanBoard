@@ -6,16 +6,13 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
-  UseGuards,
 } from '@nestjs/common';
 
 import { TasksService } from './tasks.service';
-import { JwtAuthGuard } from '../guards/jwt.guard';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 import type { AuthenticatedUser } from '../common/types/authenticated-user.type';
 import { CreateTaskDto, UpdateTaskDto } from './dto/task.dto';
 
-@UseGuards(JwtAuthGuard)
 @Controller()
 export class TasksController {
   constructor(private readonly tasksService: TasksService) {}

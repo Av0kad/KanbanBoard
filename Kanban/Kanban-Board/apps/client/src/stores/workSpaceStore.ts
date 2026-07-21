@@ -8,12 +8,13 @@ import {
   deleteTask as apiDeleteTask,
   deleteWorkspace as apiDeleteWorkspace,
   getWorkspaces,
+  inviteWorkspaceMember,
   updateBoard as apiUpdateBoard,
   updateTask as apiUpdateTask,
   updateWorkspace as apiUpdateWorkspace,
 } from "../client";
 
-import type { Workspace } from "../types/workspace";
+import type { Workspace, WorkspaceMember } from "../types/workspace";
 
 type WorkspaceStore = {
   workspaces: Workspace[];
@@ -23,12 +24,15 @@ type WorkspaceStore = {
 
   loadWorkspaces: () => Promise<void>;
   clearError: () => void;
+  reset: () => void;
 
   setSelectedWorkspaceId: (workspaceId: string) => void;
 
   addWorkspace: (title: string) => Promise<void>;
   updateWorkspace: (workspaceId: string, title: string) => Promise<void>;
   deleteWorkspace: (workspaceId: string) => Promise<void>;
+
+  inviteMember: (workspaceId: string, email: string) => Promise<void>;
 
   addBoard: (workspaceId: string, title: string) => Promise<void>;
 
@@ -39,12 +43,6 @@ type WorkspaceStore = {
   ) => Promise<void>;
 
   deleteBoard: (workspaceId: string, boardId: string) => Promise<void>;
-
-  moveBoard: (
-    workspaceId: string,
-    boardId: string,
-    direction: "left" | "right",
-  ) => void;
 
   addTask: (
     workspaceId: string,
@@ -82,6 +80,15 @@ export const useWorkspaceStore = create<WorkspaceStore>((set, get) => ({
 
   clearError: () => {
     set({ error: null });
+  },
+
+  reset: () => {
+    set({
+      workspaces: [],
+      selectedWorkspaceId: "",
+      isLoading: false,
+      error: null,
+    });
   },
 
   setSelectedWorkspaceId: (workspaceId) => {
@@ -184,6 +191,34 @@ export const useWorkspaceStore = create<WorkspaceStore>((set, get) => ({
     }
   },
 
+  inviteMember: async (workspaceId, email) => {
+    set({ error: null });
+
+    try {
+      const member: WorkspaceMember = await inviteWorkspaceMember(
+        workspaceId,
+        email,
+      );
+
+      set((state) => ({
+        workspaces: state.workspaces.map((workspace) =>
+          workspace.id === workspaceId
+            ? {
+                ...workspace,
+                members: [...(workspace.members ?? []), member],
+              }
+            : workspace,
+        ),
+      }));
+    } catch (error) {
+      set({
+        error: getErrorMessage(error),
+      });
+
+      throw error;
+    }
+  },
+
   addBoard: async (workspaceId, title) => {
     set({ error: null });
 
@@ -260,47 +295,6 @@ export const useWorkspaceStore = create<WorkspaceStore>((set, get) => ({
         error: getErrorMessage(error),
       });
     }
-  },
-
-  /*
-   * Поки що зміна порядку board залишається локальною.
-   * Для збереження після перезавантаження backend
-   * повинен мати поле position і reorder endpoint.
-   */
-  moveBoard: (workspaceId, boardId, direction) => {
-    set((state) => ({
-      workspaces: state.workspaces.map((workspace) => {
-        if (workspace.id !== workspaceId) {
-          return workspace;
-        }
-
-        const currentIndex = workspace.boards.findIndex(
-          (board) => board.id === boardId,
-        );
-
-        if (currentIndex === -1) {
-          return workspace;
-        }
-
-        const nextIndex =
-          direction === "left" ? currentIndex - 1 : currentIndex + 1;
-
-        if (nextIndex < 0 || nextIndex >= workspace.boards.length) {
-          return workspace;
-        }
-
-        const nextBoards = [...workspace.boards];
-
-        const [movedBoard] = nextBoards.splice(currentIndex, 1);
-
-        nextBoards.splice(nextIndex, 0, movedBoard);
-
-        return {
-          ...workspace,
-          boards: nextBoards,
-        };
-      }),
-    }));
   },
 
   addTask: async (workspaceId, boardId, title) => {

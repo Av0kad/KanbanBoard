@@ -1,11 +1,11 @@
 import {
   ConflictException,
-  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { WorkspaceRole } from '@prisma/client';
 
+import { WorkspaceAccessService } from '../../common/access/workspace-access.service';
 import { PrismaService } from '../../prisma/prisma.service';
 import { UsersService } from '../../users/users.service';
 import {
@@ -19,6 +19,7 @@ export class WorkspacesService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly usersService: UsersService,
+    private readonly workspaceAccess: WorkspaceAccessService,
   ) {}
 
   findAll(userId: string) {
@@ -79,19 +80,22 @@ export class WorkspacesService {
       return {
         ...workspace,
         boards: [],
+        members: [],
       };
     });
   }
 
   async update(userId: string, workspaceId: string, dto: UpdateWorkspaceDto) {
-    await this.ensureUserIsOwner(userId, workspaceId);
+    await this.workspaceAccess.ensureOwner(userId, workspaceId);
 
     return this.prisma.workspace.update({
       where: {
         id: workspaceId,
       },
       data: {
-        title: dto.title,
+        ...(dto.title !== undefined && {
+          title: dto.title,
+        }),
       },
       include: {
         boards: {
@@ -99,12 +103,25 @@ export class WorkspacesService {
             tasks: true,
           },
         },
+        members: {
+          select: {
+            id: true,
+            role: true,
+            user: {
+              select: {
+                id: true,
+                email: true,
+                name: true,
+              },
+            },
+          },
+        },
       },
     });
   }
 
   async remove(userId: string, workspaceId: string) {
-    await this.ensureUserIsOwner(userId, workspaceId);
+    await this.workspaceAccess.ensureOwner(userId, workspaceId);
 
     return this.prisma.workspace.delete({
       where: {
@@ -118,7 +135,7 @@ export class WorkspacesService {
     workspaceId: string,
     dto: InviteUserToWorkspaceDto,
   ) {
-    await this.ensureUserIsOwner(ownerId, workspaceId);
+    await this.workspaceAccess.ensureOwner(ownerId, workspaceId);
 
     const userToAdd = await this.usersService.findByEmail(dto.email);
 
@@ -158,29 +175,5 @@ export class WorkspacesService {
         },
       },
     });
-  }
-
-  private async ensureUserIsOwner(userId: string, workspaceId: string) {
-    const workspace = await this.prisma.workspace.findUnique({
-      where: {
-        id: workspaceId,
-      },
-      select: {
-        id: true,
-        ownerId: true,
-      },
-    });
-
-    if (!workspace) {
-      throw new NotFoundException('Workspace not found');
-    }
-
-    if (workspace.ownerId !== userId) {
-      throw new ForbiddenException(
-        'Only the workspace owner can perform this action',
-      );
-    }
-
-    return workspace;
   }
 }

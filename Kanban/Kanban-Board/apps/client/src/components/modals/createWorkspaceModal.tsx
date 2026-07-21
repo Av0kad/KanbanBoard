@@ -1,24 +1,43 @@
-import Modal from "../Modal";
+import ModalForm from "../ModalForm";
+import { workspaceNameSchema } from "../../schemes/nameFormValues";
+import { useWorkspaceStore } from "../../stores/workSpaceStore";
 import { useModalStore } from "../../stores/modalStore";
+import { MODAL_TYPE } from "../../types/modal";
 
-const ConfirmModal = () => {
-  const confirmModal = useModalStore((state) => state.confirmModal);
+const EditWorkspaceModal = () => {
+  const modal = useModalStore((state) => state.modal);
+  const updateWorkspace = useWorkspaceStore((state) => state.updateWorkspace);
+
+  const closeModal = useModalStore((state) => state.closeModal);
+  const openConfirmModal = useModalStore((state) => state.openConfirmModal);
   const closeConfirmModal = useModalStore((state) => state.closeConfirmModal);
 
-  if (!confirmModal) return null;
+  if (!modal || modal.type !== MODAL_TYPE.EDIT_WORKSPACE) {
+    return null;
+  }
 
   return (
-    <Modal
-      title={confirmModal.title}
-      confirmText={confirmModal.confirmText}
-      cancelText="Cancel"
-      onRequestClose={closeConfirmModal}
-      onCancel={closeConfirmModal}
-      onConfirm={confirmModal.onConfirm}
-    >
-      <p className="text-slate-300">{confirmModal.message}</p>
-    </Modal>
+    <ModalForm
+      title="Edit workspace"
+      label="Workspace name"
+      initialValue={modal.initialValue}
+      submitText="Save"
+      schema={workspaceNameSchema}
+      onRequestClose={closeModal}
+      onSubmit={(title) =>
+        openConfirmModal({
+          title: "Save workspace?",
+          message: `Rename workspace to "${title}"?`,
+          confirmText: "Save",
+          onConfirm: () => {
+            void updateWorkspace(modal.workspaceId, title);
+            closeModal();
+            closeConfirmModal();
+          },
+        })
+      }
+    />
   );
 };
 
-export default ConfirmModal;
+export default EditWorkspaceModal;

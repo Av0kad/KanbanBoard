@@ -1,5 +1,7 @@
 const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:3000/api";
 
+export const AUTH_EXPIRED_EVENT = "auth-expired";
+
 export type User = {
   id: string;
   email: string;
@@ -32,6 +34,7 @@ export type WorkspaceMember = {
   id: string;
   role: "OWNER" | "MEMBER";
   user: User;
+  createdAt?: string;
 };
 
 export type Workspace = {
@@ -44,13 +47,13 @@ export type Workspace = {
   updatedAt?: string;
 };
 
-type RegisterData = {
+export type RegisterData = {
   email: string;
   password: string;
   name?: string;
 };
 
-type LoginData = {
+export type LoginData = {
   email: string;
   password: string;
 };
@@ -83,6 +86,8 @@ async function apiRequest<T>(
   if (response.status === 401) {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("authUser");
+
+    window.dispatchEvent(new Event(AUTH_EXPIRED_EVENT));
   }
 
   if (!response.ok) {
@@ -109,13 +114,13 @@ async function apiRequest<T>(
     return undefined as T;
   }
 
-  const text = await response.text();
+  const responseText = await response.text();
 
-  if (!text) {
+  if (!responseText) {
     return undefined as T;
   }
 
-  return JSON.parse(text) as T;
+  return JSON.parse(responseText) as T;
 }
 
 /*

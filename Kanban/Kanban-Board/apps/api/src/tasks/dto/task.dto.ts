@@ -9,11 +9,15 @@ export const CreateTaskSchema = z
 
 export class CreateTaskDto extends createZodDto(CreateTaskSchema) {}
 
-export const UpdateTaskSchema = CreateTaskSchema.partial()
-  .extend({
+export const UpdateTaskSchema = z
+  .object({
+    title: z.string().trim().min(1).max(150).optional(),
     boardId: z.string().uuid().optional(),
   })
-  .strict();
+  .strict()
+  .refine((data) => Object.keys(data).length > 0, {
+    message: 'At least one field must be provided',
+  });
 
 export class UpdateTaskDto extends createZodDto(UpdateTaskSchema) {}
 

@@ -3,7 +3,7 @@ import TaskCard from "./taskCard";
 import { useWorkspaceStore } from "../stores/workSpaceStore";
 import { useModalStore } from "../stores/modalStore";
 import { MODAL_TYPE } from "../types/modal";
-import { ArrowLeft, ArrowRight, PencilIcon, Plus, Trash2 } from "lucide-react";
+import { PencilIcon, Plus, Trash2 } from "lucide-react";
 
 type BoardColumnProps = {
   workspaceId: string;
@@ -11,7 +11,6 @@ type BoardColumnProps = {
 };
 
 const BoardColumn = ({ workspaceId, board }: BoardColumnProps) => {
-  const moveBoard = useWorkspaceStore((state) => state.moveBoard);
   const deleteBoard = useWorkspaceStore((state) => state.deleteBoard);
 
   const openModal = useModalStore((state) => state.openModal);
@@ -24,22 +23,6 @@ const BoardColumn = ({ workspaceId, board }: BoardColumnProps) => {
         <h2 className="font-bold">{board.title}</h2>
 
         <div className="flex gap-2">
-          <button
-            type="button"
-            onClick={() => moveBoard(workspaceId, board.id, "left")}
-            className="rounded bg-slate-700 px-2 py-1 text-white cursor-pointer"
-          >
-            <ArrowLeft size={16} />
-          </button>
-
-          <button
-            type="button"
-            onClick={() => moveBoard(workspaceId, board.id, "right")}
-            className="rounded bg-slate-700 px-2 py-1 text-white cursor-pointer"
-          >
-            <ArrowRight size={16} />
-          </button>
-
           <button
             type="button"
             onClick={() =>
