@@ -78,7 +78,7 @@ const AuthPage = () => {
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full rounded-lg bg-violet-700 px-4 py-2 disabled:opacity-50"
+          className="w-full cursor-pointer rounded-lg bg-violet-700 px-4 py-2 transition-all duration-200 ease-in-out hover:bg-violet-500 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-violet-700"
         >
           {isLoading ? "Loading..." : isRegister ? "Create account" : "Login"}
         </button>
@@ -89,7 +89,7 @@ const AuthPage = () => {
             clearError();
             setIsRegister((current) => !current);
           }}
-          className="mt-4 w-full text-violet-300"
+          className="mt-4 w-full cursor-pointer text-violet-300 transition-colors duration-200 ease-in-out hover:text-violet-100"
         >
           {isRegister ? "Already have an account?" : "Create new account"}
         </button>

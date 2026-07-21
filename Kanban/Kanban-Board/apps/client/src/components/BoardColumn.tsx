@@ -33,7 +33,7 @@ const BoardColumn = ({ workspaceId, board }: BoardColumnProps) => {
                 initialValue: board.title,
               })
             }
-            className="rounded bg-slate-700 px-2 py-1 text-white cursor-pointer"
+            className="cursor-pointer rounded bg-slate-700 px-2 py-1 text-white transition-all duration-200 ease-in-out hover:bg-slate-500"
           >
             <PencilIcon size={16} />
           </button>
@@ -51,7 +51,7 @@ const BoardColumn = ({ workspaceId, board }: BoardColumnProps) => {
                 },
               })
             }
-            className="rounded bg-red-700 px-2 py-1 text-white cursor-pointer"
+            className="cursor-pointer rounded bg-red-700 px-2 py-1 text-white transition-all duration-200 ease-in-out hover:bg-red-500"
           >
             <Trash2 size={16} />
           </button>
@@ -65,7 +65,7 @@ const BoardColumn = ({ workspaceId, board }: BoardColumnProps) => {
                 boardId: board.id,
               })
             }
-            className="rounded-lg bg-violet-700 px-3 py-1 text-white cursor-pointer"
+            className="cursor-pointer rounded-lg bg-violet-700 px-3 py-1 text-white transition-all duration-200 ease-in-out hover:bg-violet-500"
           >
             <Plus size={24} />
           </button>

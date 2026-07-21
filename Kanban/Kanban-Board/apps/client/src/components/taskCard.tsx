@@ -34,7 +34,7 @@ const TaskCard = ({ workspaceId, boardId, task }: TaskCardProps) => {
               initialValue: task.title,
             })
           }
-          className="rounded bg-slate-700 px-2 py-1 text-sm text-white cursor-pointer"
+          className="cursor-pointer rounded bg-slate-700 px-2 py-1 text-sm text-white transition-all duration-200 ease-in-out hover:bg-slate-500"
         >
           <PencilIcon size={16} />
         </button>
@@ -52,7 +52,7 @@ const TaskCard = ({ workspaceId, boardId, task }: TaskCardProps) => {
               },
             })
           }
-          className="rounded bg-red-700 px-2 py-1 text-sm text-white cursor-pointer "
+          className="cursor-pointer rounded bg-red-700 px-2 py-1 text-sm text-white transition-all duration-200 ease-in-out hover:bg-red-500"
         >
           <Trash2 size={16} />
         </button>

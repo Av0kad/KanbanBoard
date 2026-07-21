@@ -39,7 +39,7 @@ function App() {
         <button
           type="button"
           onClick={logout}
-          className="flex items-center gap-2 rounded-lg bg-red-700 px-4 py-2"
+          className="flex cursor-pointer items-center gap-2 rounded-lg bg-red-700 px-4 py-2 transition-all duration-200 ease-in-out hover:bg-red-500"
         >
           <LogOut size={18} />
           Logout
@@ -67,7 +67,7 @@ function App() {
                     type: MODAL_TYPE.CREATE_WORKSPACE,
                   })
                 }
-                className="ml-3 mt-4 rounded-lg bg-violet-800 px-4 py-2"
+                className="ml-3 mt-4 cursor-pointer rounded-lg bg-violet-800 px-4 py-2 text-white transition-all duration-200 ease-in-out hover:bg-violet-500"
               >
                 <Plus size={26} />
               </button>

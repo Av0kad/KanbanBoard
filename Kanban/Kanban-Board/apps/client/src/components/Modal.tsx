@@ -38,7 +38,7 @@ const Modal = ({
               <button
                 type="button"
                 onClick={onCancel}
-                className="rounded-lg bg-slate-700 px-4 py-2 transition hover:bg-slate-600"
+                className="cursor-pointer rounded-lg bg-slate-700 px-4 py-2 transition-all duration-200 ease-in-out hover:bg-slate-500"
               >
                 {cancelText}
               </button>
@@ -48,7 +48,7 @@ const Modal = ({
               <button
                 type="button"
                 onClick={onConfirm}
-                className="rounded-lg bg-violet-700 px-4 py-2 transition hover:bg-violet-500"
+                className="cursor-pointer rounded-lg bg-violet-700 px-4 py-2 transition-all duration-200 ease-in-out hover:bg-violet-500"
               >
                 {confirmText}
               </button>

@@ -30,8 +30,8 @@ const WorkspaceList = () => {
               type="button"
               className={
                 workspace.id === selectedWorkspaceId
-                  ? "rounded-lg bg-violet-500 px-4 py-2 text-white"
-                  : "rounded-lg bg-violet-800 px-4 py-2 text-white"
+                  ? "cursor-pointer rounded-lg bg-violet-500 px-4 py-2 text-white transition-all duration-200 ease-in-out hover:bg-violet-400"
+                  : "cursor-pointer rounded-lg bg-violet-800 px-4 py-2 text-white transition-all duration-200 ease-in-out hover:bg-violet-500"
               }
               onClick={() => setSelectedWorkspaceId(workspace.id)}
             >
@@ -48,7 +48,7 @@ const WorkspaceList = () => {
                       workspaceId: workspace.id,
                     })
                   }
-                  className="rounded bg-green-700 px-2 py-1 text-white"
+                  className="cursor-pointer rounded bg-green-700 px-2 py-1 text-white transition-all duration-200 ease-in-out hover:bg-green-500"
                 >
                   <UserPlus size={20} />
                 </button>
@@ -62,7 +62,7 @@ const WorkspaceList = () => {
                       initialValue: workspace.title,
                     })
                   }
-                  className="rounded bg-slate-700 px-2 py-1 text-white"
+                  className="cursor-pointer rounded bg-slate-700 px-2 py-1 text-white transition-all duration-200 ease-in-out hover:bg-slate-500"
                 >
                   <PencilIcon size={20} />
                 </button>
@@ -80,7 +80,7 @@ const WorkspaceList = () => {
                       },
                     })
                   }
-                  className="rounded bg-red-700 px-2 py-1 text-white"
+                  className="cursor-pointer rounded bg-red-700 px-2 py-1 text-white transition-all duration-200 ease-in-out hover:bg-red-500"
                 >
                   <Trash2 size={20} />
                 </button>
